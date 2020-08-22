@@ -10,8 +10,8 @@ const init = async() => {
 
     const server = new Hapi.server({
 
-        port: 3000,
-        host: '142.93.127.135'
+        port: 4000,
+        host: 'localhost'
 
     });
 
@@ -24,9 +24,7 @@ const init = async() => {
 
             const task = new Task(request.payload);
             const taskSaved = await task.save();
-            return h.response(taskSaved)
-
-
+            return h.response(taskSaved);
         }
 
     })
@@ -35,7 +33,7 @@ const init = async() => {
     server.route({
         method: 'GET',
 
-        path: '/tasks',
+        path: '/total',
 
         handler: async(request, h) => {
             try {
@@ -52,14 +50,61 @@ const init = async() => {
 
     })
 
+
+
     server.route({
         method: 'GET',
 
-        path: '/tasks/{id}',
+        path: '/byID/{id}',
 
         handler: async(request, h) => {
             try {
                 const task = await Task.findById(request.params.id)
+                return h.response(task)
+
+
+            } catch (error) {
+                return h.response(error).code(500)
+
+            }
+
+        }
+
+    })
+
+
+    //buscar por nombre
+
+    server.route({
+        method: 'GET',
+
+        path: '/names/{name}',
+
+        handler: async(request, h) => {
+            try {
+                const task = await Task.find({ "name": request.params.name })
+                return h.response(task)
+
+
+            } catch (error) {
+                return h.response(error).code(500)
+
+            }
+
+        }
+
+    })
+
+    //buscar por descripcion
+
+    server.route({
+        method: 'GET',
+
+        path: '/desc/{description}',
+
+        handler: async(request, h) => {
+            try {
+                const task = await Task.find({ "description": request.params.description })
                 return h.response(task)
 
 
