@@ -11,7 +11,7 @@ const init = async() => {
     const server = new Hapi.server({
 
         port: 3000,
-        host: 'localhost'
+        host: '142.93.127.135'
 
     });
 
